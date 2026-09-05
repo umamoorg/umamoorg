@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Umamo - Open-source 2D puppet rigging editor</title>
+	<meta name="description" content="Umamo is a free, open-source, cross-platform modelling editor for 2D puppet animation with pen and touch support.  Reads and writes Live2D Cubism CMO3 and MOC3 files.">
+	<link rel="canonical" href="https://umamo.org/">
+
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Umamo">
+	<meta property="og:title" content="Umamo - Open-source 2D puppet rigging editor">
+	<meta property="og:description" content="A free, cross-platform modelling editor for 2D puppet animation with pen and touch support.  Interoperates with Live2D Cubism CMO3 and MOC3 files.">
+	<meta property="og:url" content="https://umamo.org/">
+	<meta property="og:image" content="https://umamo.org/assets/umamo-screenshot.webp">
+	<meta name="twitter:card" content="summary_large_image">
+
+	<link rel="icon" href="assets/favicon.ico" sizes="any">
+	<link rel="icon" type="image/png" href="assets/umamo-icon.png">
+	<link rel="apple-touch-icon" href="assets/umamo-icon.png">
+	<meta name="theme-color" content="#141416">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<!-- Icon sprite (stroke icons, styled with currentColor). -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+	<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+	<symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></symbol>
+	<symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></symbol>
+	<symbol id="i-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></symbol>
+	<symbol id="i-repeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+	<symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></symbol>
+	<symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></symbol>
+	<symbol id="i-layout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></symbol>
+	<symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+</svg>
+
+<a class="visually-hidden-focusable" href="#main">Skip to content</a>
+
+<nav class="navbar navbar-expand-md sticky-top border-bottom bg-body">
+	<div class="container">
+		<a class="navbar-brand d-flex align-items-center gap-2" href="#top">
+			<img src="assets/umamo-icon.png" class="pixel-icon" width="28" height="28" alt="">
+			<span class="fw-semibold">Umamo</span>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav" aria-controls="site-nav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="site-nav">
+			<ul class="navbar-nav me-auto mb-2 mb-md-0">
+				<li class="nav-item"><a class="nav-link" href="#download">Download</a></li>
+				<li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+				<li class="nav-item"><a class="nav-link" href="#screenshots">Screenshots</a></li>
+				<li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+				<li class="nav-item"><a class="nav-link" href="#support">Support</a></li>
+			</ul>
+			<a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1" href="https://github.com/umamoorg/umamo" rel="noopener">
+				GitHub <svg class="icon" aria-hidden="true"><use href="#i-external"/></svg>
+			</a>
+		</div>
+	</div>
+</nav>
+
+<main id="main">
+
+	<!-- ============================================================ Hero -->
+	<header class="hero" id="top">
+		<div class="container text-center">
+			<img src="assets/umamo-icon.png" class="pixel-icon mb-3" width="96" height="96" alt="Umamo mascot">
+			<h1 class="display-4">Open-source 2D Puppet Modelling</h1>
+			<p class="lead mx-auto">
+				Umamo is a free, cross-platform modelling editor for 2D puppet animation with pen and touch support.  It reads and writes Live2D Cubism <code>.cmo3</code> and <code>.moc3</code> files, so it fits the workflow you already have.
+			</p>
+			<div class="d-flex flex-wrap justify-content-center gap-2">
+				<span class="badge rounded-pill text-bg-secondary">Early development</span>
+				<span class="badge rounded-pill text-bg-primary" data-release-badge hidden>v<span data-release-version></span></span>
+				<span class="badge rounded-pill text-bg-secondary">GPL-3.0</span>
+			</div>
+			<div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+				<a class="btn btn-primary btn-lg d-inline-flex align-items-center gap-2" href="https://github.com/umamoorg/umamo/releases/latest" data-download-primary>
+					<svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
+					<span data-download-label>Download Umamo</span>
+				</a>
+				<a class="btn btn-outline-secondary btn-lg" href="https://github.com/umamoorg/umamo" rel="noopener">View on GitHub</a>
+			</div>
+			<p class="small text-secondary mt-3 mb-1" data-download-hint>Windows, MacOS, and Linux · free and open source</p>
+			<p class="small mb-0" data-download-alt hidden></p>
+		</div>
+		<div class="container mt-5">
+			<div class="screenshot-frame">
+				<img src="assets/umamo-screenshot.webp" width="1890" height="1273" fetchpriority="high"
+						 alt="The Umamo modelling workspace: a parameter panel on the left, a smiling 2D puppet with pony ears in the centre viewport, an outliner and mesh properties on the right, and a keyform sheet along the bottom.">
+			</div>
+		</div>
+	</header>
+
+	<!-- ======================================================== Download -->
+	<section id="download" class="py-5 mt-4 border-top">
+		<div class="container">
+			<div class="row gy-5 gx-4 align-items-start">
+				<div class="col-lg-5">
+					<h2 class="h1">Download</h2>
+					<p>
+						The current build is <strong>Umamo <span data-release-version>(see releases)</span></strong>, published <time data-release-date>on GitHub</time>.
+					</p>
+					<a class="btn btn-primary btn-lg d-inline-flex align-items-center gap-2" href="https://github.com/umamoorg/umamo/releases/latest" data-download-primary>
+						<svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
+						<span data-download-label>Download Umamo</span>
+					</a>
+					<p class="small text-secondary mt-2 mb-1" data-download-hint>Pick your platform from the table.</p>
+					<p class="small" data-download-alt hidden></p>
+					<noscript>
+						<p class="small">JavaScript is off, so the download table is not filled in. All builds are on the <a href="https://github.com/umamoorg/umamo/releases/latest">GitHub releases page</a>.</p>
+					</noscript>
+					<div class="alert alert-warning small mt-3 mb-0" role="note">
+						<strong>These builds are not signed.</strong>  Code signing and notarization cost money that I don't have so until then Windows and MacOS will warn about the app; the notes below show how to get past that.
+					</div>
+				</div>
+
+				<div class="col-lg-7">
+					<h3 class="h5" id="all-downloads">All platforms</h3>
+					<div class="table-responsive">
+						<table class="table align-middle download-table mb-2">
+							<thead>
+								<tr>
+									<th scope="col">Platform</th>
+									<th scope="col">Standalone <small class="d-none d-sm-inline">No Java needed</small></th>
+									<th scope="col">Java 21+ <small class="d-none d-sm-inline">.jar</small></th>
+								</tr>
+							</thead>
+							<tbody data-download-table>
+								<tr><td colspan="3">See the <a href="https://github.com/umamoorg/umamo/releases/latest">GitHub releases page</a> for every build.</td></tr>
+							</tbody>
+						</table>
+					</div>
+					<p class="small text-secondary">
+						Verify your download against <a href="https://github.com/umamoorg/umamo/releases/latest" data-checksums-link>SHA256SUMS.txt</a>
+						· <a href="https://github.com/umamoorg/umamo/releases/latest" data-release-link>Release notes</a>
+						· <a href="https://github.com/umamoorg/umamo/releases">All releases</a>
+						· <a href="https://github.com/umamoorg/umamo">Source code</a>
+					</p>
+					<p class="small text-secondary mb-0">
+						Standalone builds bundle their own runtime; unpack and run. The <code>.jar</code> builds need <a href="https://adoptium.net/" rel="noopener">Java 21 or newer</a> and run anywhere Java does.  MacOS is <code>.jar</code>-only for now. Android tablet builds are in progress.
+					</p>
+				</div>
+			</div>
+
+			<h3 class="h5 mt-5 mb-3">Installing</h3>
+			<ul class="nav nav-tabs" id="install-tabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="tab-windows" data-bs-toggle="tab" data-bs-target="#pane-windows" type="button" role="tab" aria-controls="pane-windows" aria-selected="true">Windows</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="tab-macos" data-bs-toggle="tab" data-bs-target="#pane-macos" type="button" role="tab" aria-controls="pane-macos" aria-selected="false">MacOS</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="tab-linux" data-bs-toggle="tab" data-bs-target="#pane-linux" type="button" role="tab" aria-controls="pane-linux" aria-selected="false">Linux</button>
+				</li>
+			</ul>
+			<div class="tab-content border border-top-0 rounded-bottom p-3 p-md-4 bg-body-tertiary">
+				<div class="tab-pane fade show active" id="pane-windows" role="tabpanel" aria-labelledby="tab-windows" tabindex="0">
+					<ol class="mb-0">
+						<li>Download the <code>.zip</code> and extract it anywhere you like.</li>
+						<li>Run <code>umamo.exe</code> from the extracted folder.</li>
+						<li>SmartScreen will say “Windows protected your PC”.  Choose <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
+					</ol>
+				</div>
+				<div class="tab-pane fade" id="pane-macos" role="tabpanel" aria-labelledby="tab-macos" tabindex="0">
+					<ol class="mb-0">
+						<li>Install <a href="https://adoptium.net/" rel="noopener">Java 21 or newer</a> if you don't have it.</li>
+						<li>Download the <code>.jar</code> for your Mac (Apple Silicon or Intel) and double-click it, or run it from Terminal:
+							<pre class="cmd"><code>java -jar umamo-macos-arm64-<span data-release-version>&lt;version&gt;</span>.jar</code></pre>
+						</li>
+						<li>If Gatekeeper quarantines an app bundle and calls it <em>damaged</em>, it is not damaged. Clear the flag in Terminal, or allow it under System Settings → Privacy &amp; Security:
+							<pre class="cmd"><code>xattr -dr com.apple.quarantine /path/to/umamo.app</code></pre>
+						</li>
+					</ol>
+				</div>
+				<div class="tab-pane fade" id="pane-linux" role="tabpanel" aria-labelledby="tab-linux" tabindex="0">
+					<ol class="mb-0">
+						<li>Download the <code>.tar.gz</code> for your architecture.</li>
+						<li>Unpack it and run the launcher:
+							<pre class="cmd"><code>tar xzf umamo-linux-x64-<span data-release-version>&lt;version&gt;</span>.tar.gz umamo/bin/umamo</code></pre>
+						</li>
+						<li>That's it.  Linux doesn't restrict you from running any application that you wish to run on your computer.</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ======================================================== Features -->
+	<section id="features" class="py-5 border-top">
+		<div class="container">
+			<h2 class="h1">Built for 2D puppet work</h2>
+			<p class="lead text-secondary mb-5" style="max-width: 44rem;">
+				One shared codebase, a modern UI, and a file layer that speaks the formats you already use.
+			</p>
+
+			<div class="row g-4 mb-5">
+				<div class="col-md-6 col-lg-4">
+					<div class="feature-icon mb-3"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg></div>
+					<h3 class="h5">Runs where you draw</h3>
+					<p class="text-secondary mb-0">Windows, MacOS and Linux today, on x64 and arm64.  Android tablet support is in progress.</p>
+				</div>
+				<div class="col-md-6 col-lg-4">
+					<div class="feature-icon mb-3"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg></div>
+					<h3 class="h5">Pen and touch</h3>
+					<p class="text-secondary mb-0">Made for pen displays and tablets.  Pen and touch are first-class input, not a mouse emulation.</p>
+				</div>
+				<div class="col-md-6 col-lg-4">
+					<div class="feature-icon mb-3"><svg class="icon" aria-hidden="true"><use href="#i-repeat"/></svg></div>
+					<h3 class="h5">Cubism Editor interop</h3>
+					<p class="text-secondary mb-0">Opens and saves <code>.cmo3</code> projects byte-compatible with the official editor, so files move back and forth.</p>
+				</div>
+				<div class="col-md-6 col-lg-4">
+					<div class="feature-icon mb-3"><svg class="icon" aria-hidden="true"><use href="#i-package"/></svg></div>
+					<h3 class="h5">MOC3 in and out</h3>
+					<p class="text-secondary mb-0">Import and export runtime distribution <code>.moc3</code> along with their sidecars.</p>
+				</div>
+				<div class="col-md-6 col-lg-4">
+					<div class="feature-icon mb-3"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></div>
+					<h3 class="h5">Import your artwork</h3>
+					<p class="text-secondary mb-0">Bring layered files straight from Krita(<code>.kra</code>), Photoshop(<code>.psd</code>), and Clip Studio Paint(<code>.clip</code>).</p>
+				</div>
+				<div class="col-md-6 col-lg-4">
+					<div class="feature-icon mb-3"><svg class="icon" aria-hidden="true"><use href="#i-layout"/></svg></div>
+					<h3 class="h5">A modern, resolution-independent UI</h3>
+					<p class="text-secondary mb-0">Crisp at any DPI, with a command registry and customisable key bindings.</p>
+				</div>
+			</div>
+
+			<h3 class="h5 mb-3">File formats</h3>
+			<div class="table-responsive">
+				<table class="table table-sm align-middle mb-2" style="max-width: 44rem;">
+					<thead>
+						<tr><th scope="col">Format</th><th scope="col">Read</th><th scope="col">Write</th><th scope="col">Notes</th></tr>
+					</thead>
+					<tbody>
+						<tr><th scope="row" class="fw-normal"><code>.uma</code></th><td>Yes</td><td>Yes</td><td class="text-secondary">Native UMA Model</td></tr>
+						<tr><th scope="row" class="fw-normal"><code>.cmo3</code></th><td>Yes</td><td>Yes</td><td class="text-secondary">Cubism Editor model, supports up to Cubism 5.4.</td></tr>
+						<tr><th scope="row" class="fw-normal"><code>.moc3</code></th><td>Yes</td><td>Yes</td><td class="text-secondary">Cubism runtime distribution model, supports up to Cubism 5.4.</td></tr>
+						<tr><th scope="row" class="fw-normal"><code>.kra</code></th><td>Yes</td><td>—</td><td class="text-secondary">Krita</td></tr>
+						<tr><th scope="row" class="fw-normal"><code>.psd</code></th><td>Yes</td><td>—</td><td class="text-secondary">Photoshop</td></tr>
+						<tr><th scope="row" class="fw-normal"><code>.clip</code></th><td>Partial</td><td>—</td><td class="text-secondary">Clip Studio Paint; has known blending issues.</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<p class="small text-secondary mb-0">Found a problem with a format?  <a href="https://github.com/umamoorg/umamo/issues">Open an issue</a> with a sample file.</p>
+		</div>
+	</section>
+
+	<!-- ===================================================== Screenshots -->
+	<section id="screenshots" class="py-5 border-top">
+		<div class="container">
+			<h2 class="h1">Screenshots</h2>
+			<p class="lead text-secondary mb-4">Click any image to enlarge it.</p>
+
+			<div class="row g-4 gallery">
+				<div class="col-md-6">
+					<figure>
+						<button type="button" class="gallery-item" data-bs-toggle="modal" data-bs-target="#lightbox"
+										data-src="assets/umamo-screenshot.webp"
+										data-alt="The Umamo modelling workspace with a puppet in the viewport."
+										data-caption="Modelling workspace: parameters, viewport, outliner and keyform sheet.">
+							<img src="assets/umamo-screenshot.webp" width="1890" height="1273" loading="lazy"
+									 alt="The Umamo modelling workspace with a puppet in the viewport.">
+						</button>
+						<figcaption class="small text-secondary mt-2">Modelling workspace: Parameters on the left, outliner and mesh properties on the right, keyform sheet below.</figcaption>
+					</figure>
+				</div>
+
+				<div class="col-md-6">
+					<figure>
+						<button type="button" class="gallery-item" data-bs-toggle="modal" data-bs-target="#lightbox"
+										data-src="assets/umamo-screenshot-uv.webp"
+										data-alt="Placeholder for the Texture workspace screenshot."
+										data-caption="Texture workspace: The UV Editor in object mode with an atlas page pinned.">
+							<img src="assets/umamo-screenshot-uv.webp" width="1890" height="1273" loading="lazy"
+									 alt="The Umamo texture workspace with a puppet in the 2D viewport and textures in the UV viewports.">
+						</button>
+						<figcaption class="small text-secondary mt-2">Texture workspace: The UV Editor in object mode with an atlas page pinned.</figcaption>
+					</figure>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================= FAQ -->
+	<section id="faq" class="py-5 border-top">
+		<div class="container">
+			<h2 class="h1 mb-4">Questions</h2>
+			<div class="accordion" id="faq-accordion" style="max-width: 52rem;">
+				<div class="accordion-item">
+					<h3 class="accordion-header">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1" aria-expanded="true" aria-controls="faq-1">
+							Can I support the Umamo project financially?
+						</button>
+					</h3>
+					<div id="faq-1" class="accordion-collapse collapse show" data-bs-parent="#faq-accordion">
+						<div class="accordion-body">
+							Umamo is completely open source and free, but if you would like to support the project you can <a href="https://patreon.com/Azxiana" rel="noopener">join the Patreon</a> or make a one-time <a href="https://ko-fi.com/azxiana" rel="noopener">donation through Ko-fi</a>.  All received funds go directly to paying hosting bills, hardware for testing, and platform developer fees.  Excess funds will be banked for the future or distributed to other open source projects working with the Umamo Project.
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h3 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2" aria-expanded="false" aria-controls="faq-2">
+							Does Umamo do animations yet?
+						</button>
+					</h3>
+					<div id="faq-2" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
+						<div class="accordion-body">
+							Not yet.  This is a long term stretch goal.  Getting the modeling, UV editor, and physics interface perfected first will be important for animation later.
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h3 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3" aria-expanded="false" aria-controls="faq-3">
+							Umamo doesn't support a newer version of Cubism/Krita/Clip Studio Paint file formats yet.  Can you add support?
+						</button>
+					</h3>
+					<div id="faq-3" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
+						<div class="accordion-body">
+							Yes, please <a href="https://github.com/umamoorg/umamo/issues">search if the issue has already been reported</a> and if not, <a href="https://github.com/umamoorg/umamo/issues/new">open a new issue</a> that describes the problem.
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h3 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-4" aria-expanded="false" aria-controls="faq-4">
+							Umamo corrupted my project and I lost my work!  HELP!
+						</button>
+					</h3>
+					<div id="faq-4" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
+						<div class="accordion-body">
+							Currently Umamo is alpha level software available for testing.  Please make sure to <strong>make regular backups</strong> of your files.  In fact, make second copies of your files explicitly for playing around with.  Do not use the original copies.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ========================================================= Support -->
+	<section id="support" class="py-5 border-top">
+		<div class="container">
+			<div class="row align-items-center g-4">
+				<div class="col-lg-8">
+					<h2 class="h1">Support the project</h2>
+					<p class="mb-0 text-secondary">
+						Umamo will always be free.  If it is useful to you, a recurring or one-time contribution pays for development costs and hardware.
+					</p>
+				</div>
+				<div class="col-lg-4 d-flex flex-wrap gap-2 justify-content-lg-end">
+					<a class="btn btn-primary d-inline-flex align-items-center gap-2" href="https://patreon.com/Azxiana" rel="noopener">
+						<svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg> Patreon
+					</a>
+					<a class="btn btn-outline-primary d-inline-flex align-items-center gap-2" href="https://ko-fi.com/azxiana" rel="noopener">
+						<svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg> Ko-fi
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- ========================================================== Footer -->
+<footer class="py-5 border-top small text-secondary">
+	<div class="container">
+		<div class="row g-4">
+			<div class="col-md-5">
+				<div class="d-flex align-items-center gap-2 mb-2">
+					<img src="assets/umamo-icon.png" class="pixel-icon" width="24" height="24" alt="">
+					<span class="fw-semibold text-body">Umamo</span>
+				</div>
+				<p class="mb-0">
+					Free software under the <a href="https://github.com/umamoorg/umamo/blob/master/LICENSE">GNU GPL v3</a>.
+					Built with Kotlin Multiplatform and Compose.
+				</p>
+			</div>
+			<div class="col-md-7">
+				<ul class="list-inline mb-3">
+					<li class="list-inline-item"><a href="https://github.com/umamoorg/umamo">GitHub</a></li>
+					<li class="list-inline-item"><a href="https://github.com/umamoorg/umamo/releases">Releases</a></li>
+					<li class="list-inline-item"><a href="https://github.com/umamoorg/umamo/issues">Issues</a></li>
+					<li class="list-inline-item"><a href="https://github.com/umamoorg/umamo/blob/master/CHANGELOG.md">Changelog</a></li>
+					<li class="list-inline-item"><a href="https://github.com/umamoorg/umamo/blob/master/CREDITS.md">Credits</a></li>
+					<li class="list-inline-item"><a href="https://github.com/umamoorg/umamoorg">Site source</a></li>
+				</ul>
+				<p class="mb-0">
+					Umamo is an independent, community-developed project.  It is <strong>not affiliated with, authorized by, endorsed by, or sponsored by Live2D Inc.</strong>(formerly Cybernoids Co., Ltd.) or any of its affiliates.
+
+					"Live2D®" and "Cubism" are trademarks of Live2D Inc. in Japan and/or other countries; all other trademarks are the property of their respective owners.  These marks are used here only nominatively, to describe file-format compatibility, and <strong>no endorsement, affiliation, or sponsorship is implied.</strong>
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<!-- Shared lightbox for the screenshot gallery. -->
+<div class="modal fade" id="lightbox" tabindex="-1" aria-labelledby="lightbox-caption" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content bg-black">
+			<div class="modal-body p-0">
+				<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
+			</div>
+			<div class="modal-footer justify-content-between border-0 py-2">
+				<p class="mb-0 small text-secondary" id="lightbox-caption" data-lightbox-caption></p>
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="js/site.js"></script>
+</body>
+</html>

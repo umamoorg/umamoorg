@@ -1,0 +1,204 @@
+/* umamo.org — site styles.  Bootstrap 5.3 does the heavy lifting; this file
+ * only sets the palette (dark, purple accent matching the editor) and a few
+ * page-specific components. */
+
+/* ---- Palette --------------------------------------------------------- */
+[data-bs-theme="dark"] {
+	--bs-body-bg: #141416;
+	--bs-body-bg-rgb: 20, 20, 22;
+	--bs-secondary-bg: #1d1d22;
+	--bs-secondary-bg-rgb: 29, 29, 34;
+	--bs-tertiary-bg: #202026;
+	--bs-tertiary-bg-rgb: 32, 32, 38;
+	--bs-border-color: #2c2c34;
+	--bs-border-color-translucent: rgba(255, 255, 255, 0.1);
+
+	--bs-primary: #a97ad9;
+	--bs-primary-rgb: 169, 122, 217;
+	--bs-primary-text-emphasis: #d7bdf3;
+	--bs-primary-bg-subtle: #2a1f3a;
+	--bs-primary-border-subtle: #5a3f7a;
+
+	--bs-link-color: #c3a0ea;
+	--bs-link-color-rgb: 195, 160, 234;
+	--bs-link-hover-color: #d7bdf3;
+	--bs-link-hover-color-rgb: 215, 189, 243;
+
+	--bs-focus-ring-color: rgba(169, 122, 217, 0.35);
+	--bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23d7bdf3'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.btn-primary {
+	--bs-btn-color: #15101c;
+	--bs-btn-bg: #a97ad9;
+	--bs-btn-border-color: #a97ad9;
+	--bs-btn-hover-color: #15101c;
+	--bs-btn-hover-bg: #ba91e3;
+	--bs-btn-hover-border-color: #ba91e3;
+	--bs-btn-active-color: #15101c;
+	--bs-btn-active-bg: #9a68cc;
+	--bs-btn-active-border-color: #9a68cc;
+	--bs-btn-disabled-color: #15101c;
+	--bs-btn-disabled-bg: #a97ad9;
+	--bs-btn-disabled-border-color: #a97ad9;
+	--bs-btn-focus-shadow-rgb: 169, 122, 217;
+}
+
+.btn-outline-primary {
+	--bs-btn-color: #c3a0ea;
+	--bs-btn-border-color: #a97ad9;
+	--bs-btn-hover-color: #15101c;
+	--bs-btn-hover-bg: #a97ad9;
+	--bs-btn-hover-border-color: #a97ad9;
+	--bs-btn-active-color: #15101c;
+	--bs-btn-active-bg: #a97ad9;
+	--bs-btn-active-border-color: #a97ad9;
+	--bs-btn-focus-shadow-rgb: 169, 122, 217;
+}
+
+.text-bg-primary {
+	color: #15101c !important;
+}
+
+/* ---- Layout ----------------------------------------------------------- */
+html {
+	scroll-behavior: smooth;
+}
+
+section[id],
+header[id] {
+	scroll-margin-top: 4.5rem;
+}
+
+.navbar {
+	backdrop-filter: blur(8px);
+	background-color: rgba(var(--bs-body-bg-rgb), 0.85) !important;
+}
+
+.icon {
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.125em;
+	flex-shrink: 0;
+}
+
+/* The mascot is pixel art; keep it crisp at every size. */
+.pixel-icon {
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
+	border-radius: 0.35rem;
+}
+
+/* ---- Hero ------------------------------------------------------------- */
+.hero {
+	padding: 4rem 0 1rem;
+}
+
+.hero .display-4 {
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+
+.hero .lead {
+	max-width: 44rem;
+}
+
+.screenshot-frame {
+	border: 1px solid var(--bs-border-color);
+	overflow: hidden;
+	background: #0f0f11;
+	box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.55);
+}
+
+.screenshot-frame img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+/* ---- Downloads -------------------------------------------------------- */
+.download-table thead th {
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.download-table small {
+	font-weight: 400;
+	color: var(--bs-secondary-color);
+}
+
+pre.cmd {
+	background: var(--bs-tertiary-bg);
+	border: 1px solid var(--bs-border-color);
+	border-radius: 0.5rem;
+	padding: 0.75rem 1rem;
+	margin: 0.5rem 0 0;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+/* ---- Features --------------------------------------------------------- */
+.feature-icon {
+	width: 2.75rem;
+	height: 2.75rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.6rem;
+	background: rgba(var(--bs-primary-rgb), 0.15);
+	color: var(--bs-primary);
+}
+
+.feature-icon .icon {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+/* ---- Screenshots ------------------------------------------------------ */
+.gallery figure {
+	margin: 0;
+}
+
+.gallery-item {
+	display: block;
+	width: 100%;
+	padding: 0;
+	border: 1px solid var(--bs-border-color);
+	border-radius: 0.6rem;
+	overflow: hidden;
+	background: #0f0f11;
+	transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.gallery-item:hover,
+.gallery-item:focus-visible {
+	transform: translateY(-2px);
+	border-color: var(--bs-primary);
+}
+
+.gallery-item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 10;
+	object-fit: cover;
+}
+
+#lightbox img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-height: 85vh;
+	object-fit: contain;
+}
+
+/* ---- Footer ----------------------------------------------------------- */
+footer a {
+	color: var(--bs-secondary-color);
+	text-decoration: none;
+}
+
+footer a:hover {
+	color: var(--bs-body-color);
+	text-decoration: underline;
+}
