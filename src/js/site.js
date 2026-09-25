@@ -13,9 +13,9 @@
 'use strict';
 
 const RELEASE = {
-	version: '0.3.0-dev', // as it appears in the asset file names
-	tag: 'v0.3.0-dev',    // git tag of the GitHub release
-	date: '2026-09-15',   // ISO date the release was published
+	version: '0.4.0-dev', // as it appears in the asset file names
+	tag: 'v0.4.0-dev',    // git tag of the GitHub release
+	date: '2026-09-29',   // ISO date the release was published
 };
 
 const REPO_URL = 'https://github.com/umamoorg/umamo';
