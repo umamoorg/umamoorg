@@ -13,23 +13,25 @@
 'use strict';
 
 const RELEASE = {
-	version: '0.4.0-dev', // as it appears in the asset file names
-	tag: 'v0.4.0-dev',    // git tag of the GitHub release
-	date: '2026-09-29',   // ISO date the release was published
+	version: '0.4.0', // as it appears in the asset file names
+	tag: 'v0.4.0',    // git tag of the GitHub release
+	date: '2026-10-01',   // ISO date the release was published
 };
 
 const REPO_URL = 'https://github.com/umamoorg/umamo';
 const RELEASES_URL = REPO_URL + '/releases';
 const LATEST_URL = RELEASES_URL + '/latest';
 
-/* One row per build target.  `standalone` is the archive extension of the
- * no-Java-required build, or null when only a .jar is published. */
+/* One row per build target.  `installers` lists the installer package
+ * extensions, the first being the one the download button offers.
+ * `portable` is the extension of the unpack-and-run archive, or null when
+ * there is none.  Every target also publishes a .jar. */
 const TARGETS = [
-	{ id: 'windows-x64', label: 'Windows (x64)',         standalone: 'zip' },
-	{ id: 'macos-arm64', label: 'MacOS (Apple Silicon)', standalone: null },
-	{ id: 'macos-x64',   label: 'MacOS (Intel)',         standalone: null },
-	{ id: 'linux-x64',   label: 'Linux (x64)',           standalone: 'tar.gz' },
-	{ id: 'linux-arm64', label: 'Linux (arm64)',         standalone: 'tar.gz' },
+	{ id: 'windows-x64', label: 'Windows (x64)',         installers: ['msi'],        portable: 'zip' },
+	{ id: 'macos-arm64', label: 'MacOS (Apple Silicon)', installers: ['dmg'],        portable: 'zip' },
+	{ id: 'macos-x64',   label: 'MacOS (Intel)',         installers: [],             portable: null },
+	{ id: 'linux-x64',   label: 'Linux (x64)',           installers: ['deb', 'rpm'], portable: 'tar.gz' },
+	{ id: 'linux-arm64', label: 'Linux (arm64)',         installers: ['deb', 'rpm'], portable: 'tar.gz' },
 ];
 
 /* ---- URL helpers ------------------------------------------------------ */
@@ -48,6 +50,10 @@ function downloadUrl(targetId, ext) {
 
 function checksumsUrl() {
 	return RELEASES_URL + '/download/' + RELEASE.tag + '/SHA256SUMS.txt';
+}
+
+function checksumsSignatureUrl() {
+	return checksumsUrl() + '.asc';
 }
 
 function findTarget(id) {
@@ -76,6 +82,17 @@ function detectTarget(nav) {
 		return /aarch64|arm64|armv8/.test(ua) ? 'linux-arm64' : 'linux-x64';
 	}
 	return null;
+}
+
+/* Returns the extension of the file the download button offers for `target`:
+ * its first installer, or the .rpm when a Linux browser names an RPM-based
+ * distribution in its user agent (Fedora's Firefox does). */
+function primaryExt(target, nav) {
+	if (!target) return null;
+	nav = nav || navigator;
+	var ua = String(nav.userAgent || '').toLowerCase();
+	if (target.installers.indexOf('rpm') !== -1 && /fedora|red hat|centos|rocky|alma|suse/.test(ua)) return 'rpm';
+	return target.installers[0] || target.portable || 'jar';
 }
 
 /* ---- DOM helpers ------------------------------------------------------ */
@@ -119,11 +136,18 @@ function fillReleaseLabels() {
 	});
 	setAll('[data-release-link]', function (a) { a.href = releaseUrl(); });
 	setAll('[data-checksums-link]', function (a) { a.href = checksumsUrl(); });
+	setAll('[data-checksums-sig-link]', function (a) { a.href = checksumsSignatureUrl(); });
 }
 
-function setupPrimaryButtons() {
-	var target = findTarget(detectTarget());
-	var ext = target ? (target.standalone || 'jar') : null;
+function extNote(ext) {
+	if (ext === 'jar') return 'Needs Java 21 or newer';
+	if (ext === 'dmg') return 'Signed and notarized · No Java required';
+	if (ext === 'rpm') return 'Signed · No Java required';
+	return 'No Java required';
+}
+
+function setupPrimaryButtons(target) {
+	var ext = primaryExt(target);
 
 	setAll('[data-download-primary]', function (btn) {
 		var label = btn.querySelector('[data-download-label]') || btn;
@@ -144,19 +168,35 @@ function setupPrimaryButtons() {
 			return;
 		}
 		p.appendChild(el('code', null, [assetName(target.id, ext)]));
-		p.appendChild(document.createTextNode(
-			ext === 'jar' ? ' · Needs Java 21 or newer · ' : ' · No Java required · '));
+		p.appendChild(document.createTextNode(' · ' + extNote(ext) + ' · '));
 		p.appendChild(el('a', { href: '#all-downloads' }, ['Other platforms']));
 	});
 
+	// The build a visitor may need in place of the detected one.
+	var alt = null;
+	if (target && target.id === 'macos-arm64') {
+		alt = { question: 'Intel Mac? ', href: downloadUrl('macos-x64', 'jar'), text: 'Download the x64 build' };
+	} else if (target && ext === 'deb') {
+		alt = { question: 'Fedora or another RPM distribution? ', href: downloadUrl(target.id, 'rpm'), text: 'Download the .rpm' };
+	} else if (target && ext === 'rpm') {
+		alt = { question: 'Debian, Ubuntu or Mint? ', href: downloadUrl(target.id, 'deb'), text: 'Download the .deb' };
+	}
+
 	setAll('[data-download-alt]', function (p) {
 		p.replaceChildren();
-		if (!target || target.id !== 'macos-arm64') { p.hidden = true; return; }
+		if (!alt) { p.hidden = true; return; }
 		p.hidden = false;
-		p.appendChild(document.createTextNode('Intel Mac? '));
-		p.appendChild(el('a', { href: downloadUrl('macos-x64', 'jar') }, ['Download the x64 build']));
+		p.appendChild(document.createTextNode(alt.question));
+		p.appendChild(el('a', { href: alt.href }, [alt.text]));
 		p.appendChild(document.createTextNode(' instead.'));
 	});
+}
+
+/* Opens the install notes for the visitor's OS instead of always Windows. */
+function selectInstallTab(target) {
+	if (!target || typeof bootstrap === 'undefined') return;
+	var tab = document.getElementById('tab-' + target.id.split('-')[0]);
+	if (tab) bootstrap.Tab.getOrCreateInstance(tab).show();
 }
 
 function renderDownloadTable() {
@@ -164,16 +204,27 @@ function renderDownloadTable() {
 	if (!tbody) return;
 	tbody.replaceChildren();
 
+	function button(t, ext, primary) {
+		var cls = 'btn btn-sm ' + (primary ? 'btn-primary' : 'btn-outline-primary');
+		return el('a', { class: cls, href: downloadUrl(t.id, ext), title: assetName(t.id, ext) }, ['.' + ext]);
+	}
+	function none(title) {
+		return el('span', { class: 'text-secondary', title: title }, ['—']);
+	}
+
 	TARGETS.forEach(function (t) {
-		var standaloneCell = t.standalone
-			? el('a', { class: 'btn btn-sm btn-outline-primary', href: downloadUrl(t.id, t.standalone), title: assetName(t.id, t.standalone) }, ['.' + t.standalone])
-			: el('span', { class: 'text-secondary', title: 'Only a .jar build is published for this platform right now.' }, ['—']);
-		var jarCell = el('a', { class: 'btn btn-sm btn-outline-primary', href: downloadUrl(t.id, 'jar'), title: assetName(t.id, 'jar') }, ['.jar']);
+		var installerCell = t.installers.length
+			? el('div', { class: 'd-flex flex-wrap gap-1' }, t.installers.map(function (ext) { return button(t, ext, true); }))
+			: none('No installer is published for this platform yet; use the .jar.');
+		var portableCell = t.portable
+			? button(t, t.portable, false)
+			: none('No portable build is published for this platform yet; use the .jar.');
 
 		tbody.appendChild(el('tr', null, [
 			el('th', { scope: 'row', class: 'fw-normal' }, [t.label]),
-			el('td', null, [standaloneCell]),
-			el('td', null, [jarCell]),
+			el('td', null, [installerCell]),
+			el('td', null, [portableCell]),
+			el('td', null, [button(t, 'jar', false)]),
 		]));
 	});
 }
@@ -199,8 +250,10 @@ function setupLightbox() {
 }
 
 function init() {
+	var target = findTarget(detectTarget());
 	fillReleaseLabels();
-	setupPrimaryButtons();
+	setupPrimaryButtons(target);
+	selectInstallTab(target);
 	renderDownloadTable();
 	setupLightbox();
 	setAll('[data-year]', function (n) { n.textContent = String(new Date().getUTCFullYear()); });
@@ -224,6 +277,8 @@ if (typeof module !== 'undefined' && module.exports) {
 		assetName: assetName,
 		downloadUrl: downloadUrl,
 		checksumsUrl: checksumsUrl,
+		checksumsSignatureUrl: checksumsSignatureUrl,
 		detectTarget: detectTarget,
+		primaryExt: primaryExt,
 	};
 }

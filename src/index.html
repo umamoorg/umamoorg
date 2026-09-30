@@ -165,9 +165,9 @@
 									.
 								</p>
 							</noscript>
-							<div class="alert alert-warning small mt-3 mb-0" role="note">
-								<strong>These builds are not signed.</strong>
-								Code signing and notarization cost money that I don't have so until then Windows and MacOS will warn about the app; the notes below show how to get past that.
+							<div class="alert alert-primary small mt-3 mb-0" role="note">
+								<strong>Build Signing:</strong>
+								The Apple Silicon <code>.dmg</code> and <code>Umamo.app</code> are signed and notarized by Apple.  The Linux <code>.rpm</code> and <code>SHA256SUMS.txt</code> are signed with the <a href="keys/umamo-signing-key.asc">Umamo release key</a>.  Windows builds are not signed yet so Windows' SmartScreen will warn on attempting to install or run them.  Follow the Windows notes below on how to get around it.
 							</div>
 						</div>
 
@@ -179,18 +179,22 @@
 										<tr>
 											<th scope="col">Platform</th>
 											<th scope="col">
-												Standalone
-												<small class="d-none d-sm-inline">No Java needed</small>
+												Installer
+												<small class="d-none d-sm-block">Recommended</small>
+											</th>
+											<th scope="col">
+												Portable
+												<small class="d-none d-sm-block">Unpack and run</small>
 											</th>
 											<th scope="col">
 												Java 21+
-												<small class="d-none d-sm-inline">.jar</small>
+												<small class="d-none d-sm-block">.jar</small>
 											</th>
 										</tr>
 									</thead>
 									<tbody data-download-table>
 										<tr>
-											<td colspan="3">
+											<td colspan="4">
 												See the
 												<a href="https://github.com/umamoorg/umamo/releases/latest">GitHub releases page</a>
 												for every build.
@@ -202,6 +206,7 @@
 							<p class="small text-secondary">
 								Verify your download against
 								<a href="https://github.com/umamoorg/umamo/releases/latest" data-checksums-link>SHA256SUMS.txt</a>
+								(<a href="https://github.com/umamoorg/umamo/releases/latest" data-checksums-sig-link>signature</a>, <a href="keys/umamo-signing-key.asc">release key</a>)
 								·
 								<a href="https://github.com/umamoorg/umamo/releases/latest" data-release-link>Release notes</a>
 								·
@@ -210,13 +215,11 @@
 								<a href="https://github.com/umamoorg/umamo">Source code</a>
 							</p>
 							<p class="small text-secondary mb-0">
-								Standalone builds bundle their own runtime; unpack and run. The
+								Installers and portable builds bundle their own Java runtime. The
 								<code>.jar</code>
 								builds need
 								<a href="https://adoptium.net/" rel="noopener">Java 21 or newer</a>
-								and run anywhere Java does. MacOS is
-								<code>.jar</code>
-								-only for now. Android tablet builds are in progress.
+								and run anywhere Java does. Intel Macs use the <code>.jar</code> for now. Android tablet builds are in progress.
 							</p>
 						</div>
 					</div>
@@ -236,26 +239,21 @@
 					<div class="tab-content border border-top-0 rounded-bottom p-3 p-md-4 bg-body-tertiary">
 						<div class="tab-pane fade show active" id="pane-windows" role="tabpanel" aria-labelledby="tab-windows" tabindex="0">
 							<ol class="mb-0">
-								<li>
-									Download the
-									<code>.zip</code>
-									and extract it anywhere you like.
-								</li>
-								<li>
-									Run
-									<code>umamo.exe</code>
-									from the extracted folder.
-								</li>
+								<li>Download the <code>.msi</code> installer and run it.  The installer installs for your local user only and will exit without confirmation after it is finished.</li>
 								<li>
 									SmartScreen will say “Windows protected your PC”. Choose
-									<strong>More info</strong>
-									, then
-									<strong>Run anyway</strong>
-									.
+									<strong>More info</strong>, then <strong>Run anyway</strong>.
 								</li>
 							</ol>
+							<p class="small text-secondary mt-3 mb-0">Rather not install? Download the <code>.zip</code> instead, extract it anywhere you like, and run <code>Umamo.exe</code> from the extracted folder.  SmartScreen will warn about it the same way.</p>
 						</div>
 						<div class="tab-pane fade" id="pane-macos" role="tabpanel" aria-labelledby="tab-macos" tabindex="0">
+							<h4 class="h6">Apple Silicon</h4>
+							<ol>
+								<li>Download the <code>.dmg</code>, open it, and drag Umamo into Applications.</li>
+								<li>Start Umamo from Applications.</li>
+							</ol>
+							<h4 class="h6 mt-4">Intel</h4>
 							<ol class="mb-0">
 								<li>
 									Install
@@ -263,32 +261,27 @@
 									if you don't have it.
 								</li>
 								<li>
-									Download the
-									<code>.jar</code>
-									for your Mac (Apple Silicon or Intel) and double-click it, or run it from Terminal:
-									<pre class="cmd"><code>java -jar umamo-macos-arm64-<span data-release-version>&lt;version&gt;</span>.jar</code></pre>
-								</li>
-								<li>
-									If Gatekeeper quarantines an app bundle and calls it
-									<em>damaged</em>
-									, it is not damaged. Clear the flag in Terminal, or allow it under System Settings → Privacy &amp; Security:
-									<pre class="cmd"><code>xattr -dr com.apple.quarantine /path/to/umamo.app</code></pre>
+									Download the Intel <code>.jar</code> and double-click it, or run it from Terminal:
+									<pre class="cmd"><code>java -XX:MaxRAMPercentage=50 -jar umamo-macos-x64-<span data-release-version>&lt;version&gt;</span>.jar</code></pre>
 								</li>
 							</ol>
 						</div>
 						<div class="tab-pane fade" id="pane-linux" role="tabpanel" aria-labelledby="tab-linux" tabindex="0">
-							<ol class="mb-0">
-								<li>
-									Download the
-									<code>.tar.gz</code>
-									for your architecture.
-								</li>
-								<li>
-									Unpack it and run the launcher:
-									<pre class="cmd"><code>tar xzf umamo-linux-x64-<span data-release-version>&lt;version&gt;</span>.tar.gz umamo/bin/umamo</code></pre>
-								</li>
-								<li>That's it. Linux doesn't restrict you from running any application that you wish to run on your computer.</li>
-							</ol>
+							<h4 class="h6">Debian 12+, Ubuntu 22.04+, Linux Mint 21+</h4>
+							<p class="mb-0">Download the <code>.deb</code> for your architecture and install it:</p>
+							<pre class="cmd"><code>sudo apt install ./umamo-linux-x64-<span data-release-version>&lt;version&gt;</span>.deb</code></pre>
+
+							<h4 class="h6 mt-4">Fedora and other RPM distributions</h4>
+							<p class="mb-0">The <code>.rpm</code> is signed. Import the Umamo release key once, then install it with signature checking turned on:</p>
+							<pre class="cmd"><code>sudo rpm --import https://umamo.org/keys/umamo-signing-key.asc
+sudo dnf install --setopt=localpkg_gpgcheck=1 ./umamo-linux-x64-<span data-release-version>&lt;version&gt;</span>.rpm</code></pre>
+							<p class="small text-secondary mt-2">Release key fingerprint: <code>6775 4C0D C587 4327 0D57 4066 F549 9AE5 C80A 0F1C</code></p>
+
+							<h4 class="h6 mt-4">Any other distribution</h4>
+							<p class="mb-0">Unpack the <code>.tar.gz</code> and run the launcher:</p>
+							<pre class="cmd"><code>tar xzf umamo-linux-x64-<span data-release-version>&lt;version&gt;</span>.tar.gz
+umamo/bin/umamo</code></pre>
+							<p class="mt-2">That's it. Linux doesn't restrict you from running any application that you wish to run on your computer.</p>
 						</div>
 					</div>
 

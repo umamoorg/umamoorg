@@ -39,15 +39,16 @@ const RELEASE = {
 ```
 
 1. Edit `version`, `tag` and `date` to match the new [GitHub release](https://github.com/umamoorg/umamo/releases).
-2. Check the release's asset names still follow `umamo-<target>-<version>.<ext>` and that the targets in the `TARGETS` array still exist (Windows ships `.zip`, Linux `.tar.gz`, MacOS `.jar` only). Adjust `TARGETS` if a platform was added or dropped.
+2. Check the release's asset names still follow `umamo-<target>-<version>.<ext>` and that the targets in the `TARGETS` array still exist. Each target lists its `installers` (Windows `.msi`, Apple Silicon `.dmg`, Linux `.deb` and `.rpm`; Intel Macs have none), its `portable` archive (Windows and Apple Silicon `.zip`, Linux `.tar.gz`) and always a `.jar`. Adjust `TARGETS` if a platform or package was added or dropped.
 3. Confirm every link resolves (GitHub answers `302` for a real asset, `404` otherwise):
 
 	 ```sh
 	 node -e '
 		const s = require("./src/js/site.js");
-		const urls = [s.checksumsUrl()];
+		const urls = [s.checksumsUrl(), s.checksumsSignatureUrl()];
 		for (const t of s.TARGETS) {
-			if (t.standalone) urls.push(s.downloadUrl(t.id, t.standalone));
+			for (const ext of t.installers) urls.push(s.downloadUrl(t.id, ext));
+			if (t.portable) urls.push(s.downloadUrl(t.id, t.portable));
 			urls.push(s.downloadUrl(t.id, "jar"));
 		}
 		console.log(urls.join("\n"));
