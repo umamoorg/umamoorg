@@ -23,7 +23,7 @@ const RELEASES_URL = REPO_URL + '/releases';
 const LATEST_URL = RELEASES_URL + '/latest';
 
 /* One row per build target.  `installers` lists the installer package
- * extensions, the first being the one the download button offers.
+ * extensions, each getting its own download button.
  * `portable` is the extension of the unpack-and-run archive, or null when
  * there is none.  Every target also publishes a .jar. */
 const TARGETS = [
@@ -84,15 +84,14 @@ function detectTarget(nav) {
 	return null;
 }
 
-/* Returns the extension of the file the download button offers for `target`:
- * its first installer, or the .rpm when a Linux browser names an RPM-based
- * distribution in its user agent (Fedora's Firefox does). */
-function primaryExt(target, nav) {
-	if (!target) return null;
-	nav = nav || navigator;
-	var ua = String(nav.userAgent || '').toLowerCase();
-	if (target.installers.indexOf('rpm') !== -1 && /fedora|red hat|centos|rocky|alma|suse/.test(ua)) return 'rpm';
-	return target.installers[0] || target.portable || 'jar';
+/* Returns the extensions of the files the download buttons offer for `target`,
+ * one button each: every installer, or else the portable archive or the .jar.
+ * Linux gets both the .deb and the .rpm since the user agent cannot reliably
+ * tell which distribution family the visitor runs. */
+function primaryExts(target) {
+	if (!target) return [];
+	if (target.installers.length) return target.installers.slice();
+	return [target.portable || 'jar'];
 }
 
 /* ---- DOM helpers ------------------------------------------------------ */
@@ -147,17 +146,24 @@ function extNote(ext) {
 }
 
 function setupPrimaryButtons(target) {
-	var ext = primaryExt(target);
+	var exts = primaryExts(target);
 
 	setAll('[data-download-primary]', function (btn) {
-		var label = btn.querySelector('[data-download-label]') || btn;
-		if (target) {
-			btn.href = downloadUrl(target.id, ext);
-			label.textContent = 'Download for ' + target.label;
-		} else {
+		if (!target) {
 			btn.href = releaseUrl();
-			label.textContent = 'See all downloads';
+			(btn.querySelector('[data-download-label]') || btn).textContent = 'See all downloads';
+			return;
 		}
+		// Clone the button for every format after the first, labelling each by
+		// its extension when there is more than one.
+		var last = btn;
+		exts.forEach(function (ext, i) {
+			var b = i ? btn.cloneNode(true) : btn;
+			if (i) { last.after(b); last = b; }
+			b.href = downloadUrl(target.id, ext);
+			(b.querySelector('[data-download-label]') || b).textContent =
+				'Download for ' + target.label + (exts.length > 1 ? ' (.' + ext + ')' : '');
+		});
 	});
 
 	setAll('[data-download-hint]', function (p) {
@@ -167,8 +173,13 @@ function setupPrimaryButtons(target) {
 				'Umamo runs on Windows, MacOS and Linux. Android tablet support is in progress.'));
 			return;
 		}
-		p.appendChild(el('code', null, [assetName(target.id, ext)]));
-		p.appendChild(document.createTextNode(' · ' + extNote(ext) + ' · '));
+		exts.forEach(function (ext, i) {
+			if (i) p.appendChild(document.createTextNode(' · '));
+			p.appendChild(el('code', null, [assetName(target.id, ext)]));
+		});
+		// Notes specific to one format, like the .rpm being signed, only fit
+		// when there is a single button.
+		p.appendChild(document.createTextNode(' · ' + extNote(exts.length === 1 ? exts[0] : null) + ' · '));
 		p.appendChild(el('a', { href: '#all-downloads' }, ['Other platforms']));
 	});
 
@@ -176,10 +187,6 @@ function setupPrimaryButtons(target) {
 	var alt = null;
 	if (target && target.id === 'macos-arm64') {
 		alt = { question: 'Intel Mac? ', href: downloadUrl('macos-x64', 'jar'), text: 'Download the x64 build' };
-	} else if (target && ext === 'deb') {
-		alt = { question: 'Fedora or another RPM distribution? ', href: downloadUrl(target.id, 'rpm'), text: 'Download the .rpm' };
-	} else if (target && ext === 'rpm') {
-		alt = { question: 'Debian, Ubuntu or Mint? ', href: downloadUrl(target.id, 'deb'), text: 'Download the .deb' };
 	}
 
 	setAll('[data-download-alt]', function (p) {
@@ -279,6 +286,6 @@ if (typeof module !== 'undefined' && module.exports) {
 		checksumsUrl: checksumsUrl,
 		checksumsSignatureUrl: checksumsSignatureUrl,
 		detectTarget: detectTarget,
-		primaryExt: primaryExt,
+		primaryExts: primaryExts,
 	};
 }
