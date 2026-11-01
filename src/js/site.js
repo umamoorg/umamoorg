@@ -3,19 +3,19 @@
  *
  * VERSION BUMP: change RELEASE below.  Every download link, the version
  * badge, and the release date on the page are derived from it.  Asset names
- * must follow the pattern
+ * must follow the pattern.
  *
  *     umamo-<target>-<version>.<ext>
  *
- * as published on https://github.com/umamoorg/umamo/releases .  If a release
+ * As published on https://github.com/umamoorg/umamo/releases .  If a release
  * adds or drops a build target, edit TARGETS as well.
  * ========================================================================== */
 'use strict';
 
 const RELEASE = {
-	version: '0.4.0', // as it appears in the asset file names
-	tag: 'v0.4.0',    // git tag of the GitHub release
-	date: '2026-10-01',   // ISO date the release was published
+	version: '0.4.0', //As it appears in the asset file names.
+	tag: 'v0.4.0',    //Git tag of the GitHub release.
+	date: '2026-10-01',   //ISO date the release was published.
 };
 
 const REPO_URL = 'https://github.com/umamoorg/umamo';
