@@ -121,14 +121,10 @@
 					<img src="assets/umamo-icon.png" class="pixel-icon mb-3" width="96" height="96" alt="Umamo mascot" />
 					<h1 class="display-4">Open-source 2D Puppet Modelling</h1>
 					<p class="lead mx-auto">
-						Umamo is a free, cross-platform modelling editor for 2D puppet animation with pen and touch support. It reads and writes Live2D Cubism
-						<code>.cmo3</code>
-						and
-						<code>.moc3</code>
-						files, so it fits the workflow you already have.
+						Umamo is a free, cross-platform modelling editor for 2D puppet animation with pen and touch support. It reads and writes Live2D Cubism <code>.cmo3</code> and <code>.moc3</code> files.  Currently in early development preview so that you can tinker with it and you should expect that some features are not yet developed.
 					</p>
 					<div class="d-flex flex-wrap justify-content-center gap-2">
-						<span class="badge rounded-pill text-bg-secondary">Early development</span>
+						<span class="badge rounded-pill text-bg-secondary">Early Development</span>
 						<span class="badge rounded-pill text-bg-primary" data-release-badge hidden>
 							v
 							<span data-release-version></span>
@@ -142,12 +138,12 @@
 						</a>
 						<a class="btn btn-outline-secondary btn-lg" href="https://github.com/umamoorg/umamo" rel="noopener">View on GitHub</a>
 					</div>
-					<p class="small text-secondary mt-3 mb-1" data-download-hint>Windows, MacOS, and Linux · free and open source</p>
+					<p class="small text-secondary mt-3 mb-1" data-download-hint>Windows, MacOS, and Linux · Free and Open Source</p>
 					<p class="small mb-0" data-download-alt hidden></p>
 				</div>
 				<div class="container mt-5">
 					<div class="screenshot-frame">
-						<img src="assets/umamo-screenshot.webp" width="1890" height="1273" fetchpriority="high" alt="The Umamo modelling workspace: a parameter panel on the left, a smiling 2D puppet with pony ears in the centre viewport, an outliner and mesh properties on the right, and a keyform sheet along the bottom." />
+						<img src="assets/umamo-screenshot.webp" width="1890" height="1273" fetchpriority="high" alt="The Umamo modelling workspace: A parameter panel on the left, a smiling 2D puppet with horse ears in the center viewport, an outliner and mesh properties on the right, and a keyform sheet along the bottom." />
 					</div>
 				</div>
 			</header>
@@ -159,14 +155,7 @@
 						<div class="col-lg-5">
 							<h2 class="h1">Download</h2>
 							<p>
-								The current build is
-								<strong>
-									Umamo
-									<span data-release-version>(see releases)</span>
-								</strong>
-								, published
-								<time data-release-date>on GitHub</time>
-								.
+								The current build is <strong>Umamo <span data-release-version>(see releases)</span></strong>, published <time data-release-date>on GitHub</time>.
 							</p>
 							<a class="btn btn-primary btn-lg d-inline-flex align-items-center gap-2" href="https://github.com/umamoorg/umamo/releases/latest" data-download-primary>
 								<svg class="icon" aria-hidden="true"><use href="#i-download" /></svg>
@@ -176,14 +165,12 @@
 							<p class="small" data-download-alt hidden></p>
 							<noscript>
 								<p class="small">
-									JavaScript is off, so the download table is not filled in. All builds are on the
-									<a href="https://github.com/umamoorg/umamo/releases/latest">GitHub releases page</a>
-									.
+									JavaScript is off, so the download table is not filled in. All builds are on the <a href="https://github.com/umamoorg/umamo/releases/latest">GitHub releases page</a>.
 								</p>
 							</noscript>
 							<div class="alert alert-primary small mt-3 mb-0" role="note">
 								<strong>Build Signing:</strong>
-								The Apple Silicon <code>.dmg</code> and <code>Umamo.app</code> are signed and notarized by Apple.  The Linux <code>.rpm</code> and <code>SHA256SUMS.txt</code> are signed with the <a href="keys/umamo-signing-key.asc">Umamo release key</a>.  Windows builds are not signed yet so Windows' SmartScreen will warn on attempting to install or run them.  Follow the Windows notes below on how to get around it.
+								Windows builds are not signed yet so the Windows' SmartScreen will warn on attempting to install or run them.  Follow the Windows notes below on how to get around it.
 							</div>
 						</div>
 
@@ -221,21 +208,10 @@
 							</div>
 							<p class="small text-secondary">
 								Verify your download against
-								<a href="https://github.com/umamoorg/umamo/releases/latest" data-checksums-link>SHA256SUMS.txt</a>
-								(<a href="https://github.com/umamoorg/umamo/releases/latest" data-checksums-sig-link>signature</a>, <a href="keys/umamo-signing-key.asc">release key</a>)
-								·
-								<a href="https://github.com/umamoorg/umamo/releases/latest" data-release-link>Release notes</a>
-								·
-								<a href="https://github.com/umamoorg/umamo/releases">All releases</a>
-								·
-								<a href="https://github.com/umamoorg/umamo">Source code</a>
+								<a href="https://github.com/umamoorg/umamo/releases/latest" data-checksums-link>SHA256SUMS.txt</a>(<a href="https://github.com/umamoorg/umamo/releases/latest" data-checksums-sig-link>signature</a>, <a href="keys/umamo-signing-key.asc">release key</a>) · <a href="https://github.com/umamoorg/umamo/releases/latest" data-release-link>Release notes</a> · <a href="https://github.com/umamoorg/umamo/releases">All releases</a> · <a href="https://github.com/umamoorg/umamo">Source code</a>
 							</p>
 							<p class="small text-secondary mb-0">
-								Installers and portable builds bundle their own Java runtime. The
-								<code>.jar</code>
-								builds need
-								<a href="https://adoptium.net/" rel="noopener">Java 21 or newer</a>
-								and run anywhere Java does. Intel Macs use the <code>.jar</code> for now. Android tablet builds are in progress.
+								Installers and portable builds bundle their own Java runtime.  The <code>.jar</code> builds need <a href="https://adoptium.net/" rel="noopener">Java 21 or newer</a> and run anywhere Java does.  Intel Macs use the <code>.jar</code> for now.
 							</p>
 						</div>
 					</div>
@@ -297,7 +273,7 @@ sudo dnf install --setopt=localpkg_gpgcheck=1 ./umamo-linux-x64-<span data-relea
 							<p class="mb-0">Unpack the <code>.tar.gz</code> and run the launcher:</p>
 							<pre class="cmd"><code>tar xzf umamo-linux-x64-<span data-release-version>&lt;version&gt;</span>.tar.gz
 umamo/bin/umamo</code></pre>
-							<p class="mt-2">That's it. Linux doesn't restrict you from running any application that you wish to run on your computer.</p>
+							<p class="mt-2">That's it.  Linux doesn't restrict you from running any application that you wish to run on your computer.</p>
 						</div>
 					</div>
 
@@ -356,59 +332,49 @@ umamo/bin/umamo</code></pre>
 			<!-- ======================================================== Features -->
 			<section id="features" class="py-5 border-top">
 				<div class="container">
-					<h2 class="h1">Built for 2D puppet work</h2>
-					<p class="lead text-secondary mb-5" style="max-width: 44rem">One shared codebase, a modern UI, and a file layer that speaks the formats you already use.</p>
+					<h2 class="h1">Built for 2D Puppet Work</h2>
+					<p class="lead text-secondary mb-5" style="max-width: 44rem">One shared codebase, a modern UI, and works with your existing CMO3 and MOC3 puppets.</p>
 
 					<div class="row g-4 mb-5">
 						<div class="col-md-6 col-lg-4">
 							<div class="feature-icon mb-3">
 								<svg class="icon" aria-hidden="true"><use href="#i-monitor" /></svg>
 							</div>
-							<h3 class="h5">Runs where you draw</h3>
-							<p class="text-secondary mb-0">Windows, MacOS and Linux today, on x64 and arm64. Android tablet support is in progress.</p>
+							<h3 class="h5">Runs on any OS</h3>
+							<p class="text-secondary mb-0">Windows, MacOS and Linux today, on x64 and arm64.  Android and iPadOS are on the development roadmap.</p>
 						</div>
 						<div class="col-md-6 col-lg-4">
 							<div class="feature-icon mb-3">
 								<svg class="icon" aria-hidden="true"><use href="#i-pen" /></svg>
 							</div>
-							<h3 class="h5">Pen and touch</h3>
-							<p class="text-secondary mb-0">Made for pen displays and tablets. Pen and touch are first-class input, not a mouse emulation.</p>
+							<h3 class="h5">Pen Displays and Tablets</h3>
+							<p class="text-secondary mb-0">Made with pen displays in mind by building the interface around pen input.</p>
 						</div>
 						<div class="col-md-6 col-lg-4">
 							<div class="feature-icon mb-3">
 								<svg class="icon" aria-hidden="true"><use href="#i-repeat" /></svg>
 							</div>
-							<h3 class="h5">Cubism Editor interop</h3>
+							<h3 class="h5">Cubism Editor Interopability</h3>
 							<p class="text-secondary mb-0">
-								Opens and saves
-								<code>.cmo3</code>
-								projects byte-compatible with the official editor, so files move back and forth.
+								Opens and saves	<code>.cmo3</code> projects byte-compatible with the official editor.  Tested with Cubism Editor 4.2 to 5.4.
 							</p>
 						</div>
 						<div class="col-md-6 col-lg-4">
 							<div class="feature-icon mb-3">
 								<svg class="icon" aria-hidden="true"><use href="#i-package" /></svg>
 							</div>
-							<h3 class="h5">MOC3 in and out</h3>
+							<h3 class="h5">MOC3 In and Out</h3>
 							<p class="text-secondary mb-0">
-								Import and export runtime distribution
-								<code>.moc3</code>
-								along with their sidecars.
+								Import and export runtime distribution <code>.moc3</code> along with their sidecars.
 							</p>
 						</div>
 						<div class="col-md-6 col-lg-4">
 							<div class="feature-icon mb-3">
 								<svg class="icon" aria-hidden="true"><use href="#i-layers" /></svg>
 							</div>
-							<h3 class="h5">Import your artwork</h3>
+							<h3 class="h5">Industry Standard Artwork Format Support</h3>
 							<p class="text-secondary mb-0">
-								Bring layered files straight from Krita(
-								<code>.kra</code>
-								), Photoshop(
-								<code>.psd</code>
-								), and Clip Studio Paint(
-								<code>.clip</code>
-								).
+								Bring layered files straight from Krita(<code>.kra</code>), Photoshop(<code>.psd</code>), and Clip Studio Paint(<code>.clip</code>).
 							</p>
 						</div>
 						<div class="col-md-6 col-lg-4">
@@ -416,7 +382,7 @@ umamo/bin/umamo</code></pre>
 								<svg class="icon" aria-hidden="true"><use href="#i-layout" /></svg>
 							</div>
 							<h3 class="h5">A modern, resolution-independent UI</h3>
-							<p class="text-secondary mb-0">Crisp at any DPI, with a command registry and customisable key bindings.</p>
+							<p class="text-secondary mb-0">Built with Kotlin and Compose Multiplatform, with a command palette, pie menus, and high resolution display support.</p>
 						</div>
 					</div>
 
@@ -472,9 +438,7 @@ umamo/bin/umamo</code></pre>
 						</table>
 					</div>
 					<p class="small text-secondary mb-0">
-						Found a problem with a format?
-						<a href="https://github.com/umamoorg/umamo/issues">Open an issue</a>
-						with a sample file.
+						Found a problem with a format?  <a href="https://github.com/umamoorg/umamo/issues">Open an issue</a> with a sample file.
 					</p>
 				</div>
 			</section>
@@ -518,11 +482,7 @@ umamo/bin/umamo</code></pre>
 							</h3>
 							<div id="faq-1" class="accordion-collapse collapse show" data-bs-parent="#faq-accordion">
 								<div class="accordion-body">
-									Umamo is completely open source and free, but if you would like to support the project you can
-									<a href="https://patreon.com/Azxiana" rel="noopener">join the Patreon</a>
-									or make a one-time
-									<a href="https://ko-fi.com/azxiana" rel="noopener">donation through Ko-fi</a>
-									. All received funds go directly to paying hosting bills, hardware for testing, and platform developer fees. Excess funds will be banked for the future or distributed to other open source projects working with the Umamo Project.
+									Umamo is completely open source and free, but if you would like to support the project you can <a href="https://patreon.com/Azxiana" rel="noopener">join the Patreon</a> or make a one-time <a href="https://ko-fi.com/azxiana" rel="noopener">donation through Ko-fi</a>. All received funds go directly to paying hosting bills, hardware for testing, and platform developer fees. Excess funds will be banked for the future or distributed to other open source projects working with the Umamo Project.
 								</div>
 							</div>
 						</div>
@@ -531,20 +491,16 @@ umamo/bin/umamo</code></pre>
 								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2" aria-expanded="false" aria-controls="faq-2">Does Umamo do animations yet?</button>
 							</h3>
 							<div id="faq-2" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
-								<div class="accordion-body">Not yet. This is a long term stretch goal. Getting the modeling, UV editor, and physics interface perfected first will be important for animation later.</div>
+								<div class="accordion-body">Animation support is on the development roadmap for Summer 2027.  This is a long term stretch goal.  Getting the modeling, UV editor, and physics interface perfected first is the most important goal.</div>
 							</div>
 						</div>
 						<div class="accordion-item">
 							<h3 class="accordion-header">
-								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3" aria-expanded="false" aria-controls="faq-3">Umamo doesn't support a newer version of Cubism/Krita/Clip Studio Paint file formats yet. Can you add support?</button>
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3" aria-expanded="false" aria-controls="faq-3">Umamo doesn't support a newer version of Cubism/Krita/Clip Studio Paint file formats yet.  Can you add support?</button>
 							</h3>
 							<div id="faq-3" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
 								<div class="accordion-body">
-									Yes, please
-									<a href="https://github.com/umamoorg/umamo/issues">search if the issue has already been reported</a>
-									and if not,
-									<a href="https://github.com/umamoorg/umamo/issues/new">open a new issue</a>
-									that describes the problem.
+									Yes, please <a href="https://github.com/umamoorg/umamo/issues">search if the issue has already been reported</a> and if not, <a href="https://github.com/umamoorg/umamo/issues/new">open a new issue</a> that describes the problem.
 								</div>
 							</div>
 						</div>
@@ -554,9 +510,7 @@ umamo/bin/umamo</code></pre>
 							</h3>
 							<div id="faq-4" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
 								<div class="accordion-body">
-									Currently Umamo is alpha level software available for testing. Please make sure to
-									<strong>make regular backups</strong>
-									of your files. In fact, make second copies of your files explicitly for playing around with. Do not use the original copies.
+									Currently Umamo is alpha level software available for testing.  Please make sure to <strong>make regular backups</strong> of your files.  In fact, make second copies of your files explicitly for playing around with.  Do not use the original copies.
 								</div>
 							</div>
 						</div>
@@ -570,7 +524,7 @@ umamo/bin/umamo</code></pre>
 					<div class="row align-items-center g-4">
 						<div class="col-lg-8">
 							<h2 class="h1">Support the project</h2>
-							<p class="mb-0 text-secondary">Umamo will always be free. If it is useful to you, a recurring or one-time contribution pays for development costs and hardware.</p>
+							<p class="mb-0 text-secondary">Umamo will always be free.  If it is useful to you, a recurring or one-time contribution pays for development costs and hardware.</p>
 						</div>
 						<div class="col-lg-4 d-flex flex-wrap gap-2 justify-content-lg-end">
 							<a class="btn btn-primary d-inline-flex align-items-center gap-2" href="https://patreon.com/Azxiana" rel="noopener">
@@ -597,9 +551,7 @@ umamo/bin/umamo</code></pre>
 							<span class="fw-semibold text-body">Umamo</span>
 						</div>
 						<p class="mb-0">
-							Free software under the
-							<a href="https://github.com/umamoorg/umamo/blob/master/LICENSE">GNU GPL v3</a>
-							. Built with Kotlin Multiplatform and Compose.
+							Free software under the <a href="https://github.com/umamoorg/umamo/blob/master/LICENSE">GNU GPL v3</a>. Built with Kotlin Multiplatform and Compose.
 						</p>
 					</div>
 					<div class="col-md-7">
@@ -612,10 +564,7 @@ umamo/bin/umamo</code></pre>
 							<li class="list-inline-item"><a href="https://github.com/umamoorg/umamoorg">Site source</a></li>
 						</ul>
 						<p class="mb-0">
-							Umamo is an independent, community-developed project. It is
-							<strong>not affiliated with, authorized by, endorsed by, or sponsored by Live2D Inc.</strong>
-							(formerly Cybernoids Co., Ltd.) or any of its affiliates. "Live2D®" and "Cubism" are trademarks of Live2D Inc. in Japan and/or other countries; all other trademarks are the property of their respective owners. These marks are used here only nominatively, to describe file-format compatibility, and
-							<strong>no endorsement, affiliation, or sponsorship is implied.</strong>
+							Umamo is an independent, community-developed project. It is <strong>not affiliated with, authorized by, endorsed by, or sponsored by Live2D Inc.</strong> (formerly Cybernoids Co., Ltd.) or any of its affiliates. "Live2D®" and "Cubism" are trademarks of Live2D Inc. in Japan and/or other countries; all other trademarks are the property of their respective owners. These marks are used here only nominatively, to describe file-format compatibility, and <strong>no endorsement, affiliation, or sponsorship is implied.</strong>
 						</p>
 					</div>
 				</div>
